@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { Paper } from '@material-ui/core';
+import { Divider, Paper } from '@material-ui/core';
 
 import API from '../services';
 import { Todo } from '../interfaces';
@@ -10,16 +10,26 @@ import { Todo } from '../interfaces';
 import Tasks from './components/Tasks';
 
 const Layout = styled(Paper)`
-  width: 50%;
+  width: 25rem;
   height: 50%;
   margin: auto;
   display: grid;
-  grid-template-areas: 'input-todo' 'totods';
+  gap: 1rem;
+  grid-template-areas:
+    'input-todo'
+    'totods';
+  grid-template-rows:
+    auto
+    1fr;
 `;
 const InputTodo = styled.div``;
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
+
+  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {};
+  const handleUpdate = () => {};
+  const handleAdd = () => {};
 
   useEffect(() => {
     (async () => {
@@ -31,7 +41,12 @@ const App: React.FC = () => {
   return (
     <Layout>
       <InputTodo />
-      <Tasks todos={todos} />
+      <Divider />
+      <Tasks
+        todos={todos}
+        handleCheck={handleCheck}
+        handleUpdate={handleUpdate}
+      />
     </Layout>
   );
 };

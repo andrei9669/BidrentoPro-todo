@@ -4,18 +4,24 @@ import { Todo } from '../interfaces';
 
 const API = {
   async getTodosForUser(userId: number): Promise<Todo[]> {
-    return axios.get(
-      `https://jsonplaceholder.typicode.com/todos?userId=${userId}`,
-    );
+    return (
+      await axios.get<Todo[]>(
+        `https://jsonplaceholder.typicode.com/todos?userId=${userId}`,
+      )
+    ).data;
   },
   async getAllTodos(): Promise<Todo[]> {
-    return axios.get(`https://jsonplaceholder.typicode.com/todos`);
+    return (
+      await axios.get<Todo[]>(`https://jsonplaceholder.typicode.com/todos`)
+    ).data;
   },
   async postTodo({ title, userId }: { title: string; userId: string }) {
-    return axios.post('https://jsonplaceholder.typicode.com/todos', {
-      title,
-      userId,
-    });
+    return (
+      await axios.post<Todo[]>('https://jsonplaceholder.typicode.com/todos', {
+        title,
+        userId,
+      })
+    ).data;
   },
   async updateTodo({
     id,
@@ -27,11 +33,13 @@ const API = {
     body: string;
     userId: number;
   }) {
-    return axios.put('https://jsonplaceholder.typicode.com/todos', {
-      id,
-      title,
-      userId,
-    });
+    return (
+      await axios.put<Todo[]>('https://jsonplaceholder.typicode.com/todos', {
+        id,
+        title,
+        userId,
+      })
+    ).data;
   },
 };
 export default API;
