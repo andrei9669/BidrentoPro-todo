@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "baseUrl": "src",
     "skipLibCheck": true,
@@ -15,9 +19,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react-jsx"
   },
-  "include": [".", ".eslintrc.js"],
-  "exclude": ["node_modules"],
-  "paths": {}
+  "include": [
+    ".eslintrc.js",
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
