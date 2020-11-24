@@ -1,42 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import styled from 'styled-components';
-
-import { Checkbox, Typography } from '@material-ui/core';
-
-import { Todo } from '../../interfaces';
-
-const TodoLayout = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  padding: 0 0 0 1rem;
-  &:nth-child(even) {
-    background-color: #dddddd;
-  }
-`;
+import { Todo } from 'interfaces';
+import API from 'services';
+import Task from 'app/components/Task';
 
 interface Props {
-  todos: Todo[];
-  handleCheck: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleUpdate: () => void;
+  todos: Map<string | number, Todo>;
+  handleUpdate: React.Dispatch<
+    React.SetStateAction<Map<string | number, Todo>>
+  >;
 }
 
 const Tasks: React.FC<Props> = (props) => {
-  const { todos, handleCheck, handleUpdate } = props;
+  const { todos, handleUpdate } = props;
+  const [inEdit, setInEdit] = useState<number>();
+
+  const handleCheck = (id: number | string) => {
+    handleUpdate((s) => {
+      const updateTodo = s.get(id);
+      if (updateTodo !== undefined) {
+        updateTodo.completed = !updateTodo.completed;
+        s.set(id, updateTodo);
+      }
+      return new Map(s);
+    });
+  };
+
+  const handleSave = async (title: string) => {
+    if (inEdit !== undefined) {
+      const editedTodo = todos.get(inEdit);
+      if (editedTodo !== undefined) {
+        const updatedTodo = await API.updateTodo({ title, id: inEdit });
+
+        handleUpdate((s) => {
+          s.set(updatedTodo.id, updatedTodo);
+
+          return new Map(s);
+        });
+      }
+    }
+  };
 
   return (
     <div>
-      {todos.map(({ title, completed }) => (
-        <TodoLayout>
-          <Typography>{title}</Typography>
-          <Checkbox
-            checked={completed}
-            onChange={handleCheck}
-            color="primary"
-            aria-label={`${title} checkbox`}
-          />
-        </TodoLayout>
+      {Array.from(todos).map(([id, todo]) => (
+        <Task
+          key={id}
+          handleCheck={handleCheck}
+          item={todo}
+          inEdit={inEdit}
+          setInEdit={setInEdit}
+          handleSave={handleSave}
+        />
       ))}
     </div>
   );

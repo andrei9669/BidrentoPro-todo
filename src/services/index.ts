@@ -1,49 +1,54 @@
 import axios from 'axios';
 
-import { Todo } from '../interfaces';
+import { Todo } from 'interfaces';
+import { todoToMap } from 'utils';
+
+const API_URL = 'https://jsonplaceholder.typicode.com/todos';
 
 const API = {
-  async getTodosForUser(userId: number): Promise<Todo[]> {
-    return (
-      await axios.get<Todo[]>(
-        `https://jsonplaceholder.typicode.com/todos?userId=${userId}`,
-      )
-    ).data;
+  async getTodosForUser(userId: number): Promise<Map<number, Todo>> {
+    const urlParams = new URLSearchParams();
+    urlParams.set('userId', userId.toString());
+
+    const { data } = await axios.get<Todo[]>(
+      `${API_URL}?${urlParams.toString()}`,
+    );
+
+    return todoToMap(data);
   },
-  async getAllTodos(): Promise<Todo[]> {
-    return (
-      await axios.get<Todo[]>(`https://jsonplaceholder.typicode.com/todos`)
-    ).data;
+
+  async getAllTodos(): Promise<Map<number, Todo>> {
+    const { data } = await axios.get<Todo[]>(API_URL);
+
+    return todoToMap(data);
   },
+
   async postTodo({
     title,
-    userId = '0',
+    userId = 1,
   }: {
     title: string;
-    userId?: string;
+    userId?: number;
   }): Promise<Todo> {
     return (
-      await axios.post<Todo>('https://jsonplaceholder.typicode.com/todos', {
+      await axios.post<Todo>(API_URL, {
         title,
         userId,
       })
     ).data;
   },
+
   async updateTodo({
     id,
     title,
-    userId,
   }: {
     id: number;
     title: string;
-    body: string;
-    userId: number;
   }): Promise<Todo> {
     return (
-      await axios.put<Todo>('https://jsonplaceholder.typicode.com/todos', {
+      await axios.put<Todo>(API_URL, {
         id,
         title,
-        userId,
       })
     ).data;
   },

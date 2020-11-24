@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-
 import styled from 'styled-components';
-
 import { Divider, Paper } from '@material-ui/core';
 
-import API from '../services';
-import { Todo } from '../interfaces';
+import { Todo } from 'interfaces';
+import API from 'services';
 
 import Tasks from './components/Tasks';
 import InputTodo from './components/InputTodo';
@@ -25,22 +23,19 @@ const Layout = styled(Paper)`
 `;
 
 const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-
-  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {};
-  const handleUpdate = () => {};
+  const [todos, setTodos] = useState<Map<string | number, Todo>>(new Map());
 
   const handleAdd = async (value: string) => {
     const newTodo = await API.postTodo({ title: value });
     setTodos((state) => {
-      state.unshift(newTodo);
+      state.set(newTodo.id, newTodo);
       return state;
     });
   };
 
   useEffect(() => {
     (async () => {
-      const data = await API.getAllTodos();
+      const data = await API.getTodosForUser(1);
       setTodos(data);
     })();
   }, []);
@@ -49,11 +44,7 @@ const App: React.FC = () => {
     <Layout>
       <InputTodo setTodo={handleAdd} />
       <Divider />
-      <Tasks
-        todos={todos}
-        handleCheck={handleCheck}
-        handleUpdate={handleUpdate}
-      />
+      <Tasks todos={todos} handleUpdate={setTodos} />
     </Layout>
   );
 };

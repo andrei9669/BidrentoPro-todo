@@ -106,11 +106,9 @@ module.exports = {
           'builtin',
           'external',
           'internal',
-          'parent',
-          'sibling',
-          'index',
+          ['parent', 'sibling', 'index'],
         ],
-        'newlines-between': 'always-and-inside-groups',
+        'newlines-between': 'always',
       },
     ],
     'react/prop-types': 0,
@@ -122,6 +120,12 @@ module.exports = {
     'jsx-a11y/anchor-is-valid': 0,
   },
   settings: {
+    'import/resolver': {
+      node: {
+        paths: ['src'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
     'import/parsers': {
       '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
