@@ -15,9 +15,15 @@ const API = {
       await axios.get<Todo[]>(`https://jsonplaceholder.typicode.com/todos`)
     ).data;
   },
-  async postTodo({ title, userId }: { title: string; userId: string }) {
+  async postTodo({
+    title,
+    userId = '0',
+  }: {
+    title: string;
+    userId?: string;
+  }): Promise<Todo> {
     return (
-      await axios.post<Todo[]>('https://jsonplaceholder.typicode.com/todos', {
+      await axios.post<Todo>('https://jsonplaceholder.typicode.com/todos', {
         title,
         userId,
       })
@@ -32,9 +38,9 @@ const API = {
     title: string;
     body: string;
     userId: number;
-  }) {
+  }): Promise<Todo> {
     return (
-      await axios.put<Todo[]>('https://jsonplaceholder.typicode.com/todos', {
+      await axios.put<Todo>('https://jsonplaceholder.typicode.com/todos', {
         id,
         title,
         userId,

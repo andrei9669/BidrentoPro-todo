@@ -10,7 +10,7 @@ const TodoLayout = styled.div`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
-  padding: 0.3rem 0 0.3rem 1rem;
+  padding: 0 0 0 1rem;
   &:nth-child(even) {
     background-color: #dddddd;
   }

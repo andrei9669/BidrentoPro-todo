@@ -8,6 +8,7 @@ import API from '../services';
 import { Todo } from '../interfaces';
 
 import Tasks from './components/Tasks';
+import InputTodo from './components/InputTodo';
 
 const Layout = styled(Paper)`
   width: 25rem;
@@ -22,14 +23,20 @@ const Layout = styled(Paper)`
     auto
     1fr;
 `;
-const InputTodo = styled.div``;
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
 
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {};
   const handleUpdate = () => {};
-  const handleAdd = () => {};
+
+  const handleAdd = async (value: string) => {
+    const newTodo = await API.postTodo({ title: value });
+    setTodos((state) => {
+      state.unshift(newTodo);
+      return state;
+    });
+  };
 
   useEffect(() => {
     (async () => {
@@ -40,7 +47,7 @@ const App: React.FC = () => {
 
   return (
     <Layout>
-      <InputTodo />
+      <InputTodo setTodo={handleAdd} />
       <Divider />
       <Tasks
         todos={todos}
