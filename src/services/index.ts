@@ -50,14 +50,17 @@ const API = {
   async updateTodo({
     id,
     title,
+    completed,
   }: {
     id: number;
     title: string;
+    completed: boolean;
   }): Promise<Todo> {
     return (
-      await axios.put<Todo>(API_URL, {
+      await axios.put<Todo>(`${API_URL}/${id}`, {
         id,
         title,
+        completed,
       })
     ).data;
   },

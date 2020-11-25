@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { StylesProvider } from '@material-ui/core';
 
 import App from 'app/App';
 import reportWebVitals from 'reportWebVitals';
+
 import 'index.scss';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <StylesProvider injectFirst>
+      <App />
+    </StylesProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );

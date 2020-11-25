@@ -16,7 +16,7 @@ const InputTodo: React.FC<Props> = (props) => {
   return (
     <>
       <TextField
-        label="Input Todo"
+        label="Add Todo"
         multiline
         rowsMax={5}
         value={inputValue}

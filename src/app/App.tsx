@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Divider, Paper } from '@material-ui/core';
 
-import { Todo } from 'interfaces';
+import { IFilters, Todo } from 'interfaces';
 import API from 'services';
+import { ALL, DONE, NOT_DONE } from 'utils/constants';
 
-import Tasks from './components/Tasks';
-import InputTodo from './components/InputTodo';
+import { Filters, InputTodo, Tasks } from './components';
 
 const Layout = styled(Paper)`
   width: 25rem;
@@ -14,16 +14,19 @@ const Layout = styled(Paper)`
   margin: auto;
   display: grid;
   gap: 1rem;
-  grid-template-areas:
-    'input-todo'
-    'totods';
+  padding: 1rem;
   grid-template-rows:
+    auto
     auto
     1fr;
 `;
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<Map<string | number, Todo>>(new Map());
+  const [filters, setFilters] = useState<IFilters>({
+    titleFilter: '',
+    checkedFilter: ALL,
+  });
 
   const handleAdd = async (value: string) => {
     const newTodo = await API.postTodo({ title: value });
@@ -40,11 +43,29 @@ const App: React.FC = () => {
     })();
   }, []);
 
+  const filteredTodos = Array.from(todos).filter(([, todo]) => {
+    let show: boolean;
+    switch (filters.checkedFilter) {
+      case DONE:
+        show = todo.completed;
+        break;
+      case NOT_DONE:
+        show = !todo.completed;
+        break;
+      case ALL:
+      default:
+        show = true;
+        break;
+    }
+    return todo.title.match(filters.titleFilter) && show;
+  });
+
   return (
     <Layout>
+      <Filters filters={filters} setFilters={setFilters} />
       <InputTodo setTodo={handleAdd} />
       <Divider />
-      <Tasks todos={todos} handleUpdate={setTodos} />
+      <Tasks todos={new Map(filteredTodos)} handleUpdate={setTodos} />
     </Layout>
   );
 };

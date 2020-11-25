@@ -5,25 +5,32 @@ import styled from 'styled-components';
 import { Todo } from 'interfaces';
 
 const TodoLayout = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
   padding: 0 0 0 1rem;
   &:nth-child(even) {
     background-color: #dddddd;
   }
 `;
+const StyledButton = styled(Button)`
+  height: 24px;
+  margin: 9px;
+`;
+
+const StyledTypography = styled(Typography)`
+  max-width: 20rem;
+  overflow-x: hidden;
+`;
+
 interface Props {
-  handleCheck: (id: number) => void;
   item: Todo;
   inEdit: number | undefined;
   setInEdit: React.Dispatch<React.SetStateAction<number | undefined>>;
-  handleSave: (title: string) => Promise<void>;
+  handleSave: (title: string, id: number, completed: boolean) => Promise<void>;
 }
 
 const Task: React.FC<Props> = (props) => {
   const {
-    handleCheck,
     item: { id, title, completed },
     inEdit,
     setInEdit,
@@ -32,22 +39,44 @@ const Task: React.FC<Props> = (props) => {
 
   const [value, setValue] = useState(title);
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+  };
+
   return (
     <TodoLayout>
       {id === inEdit ? (
-        <div>
-          <TextField value={title} error={false} />
-          <Button onClick={() => handleSave(value)}>Save</Button>
-        </div>
+        <>
+          <TextField
+            multiline
+            rowsMax={5}
+            fullWidth
+            value={value}
+            error={false}
+            onChange={handleChange}
+          />
+          <StyledButton
+            type="submit"
+            color="primary"
+            variant="contained"
+            onClick={() => handleSave(value, id, completed)}
+          >
+            Save
+          </StyledButton>
+        </>
       ) : (
-        <Typography onClick={() => setInEdit(id)}>{title}</Typography>
+        <>
+          <StyledTypography display="block" onClick={() => setInEdit(id)}>
+            {title}
+          </StyledTypography>
+          <Checkbox
+            checked={completed}
+            onChange={() => handleSave(value, id, !completed)}
+            color="primary"
+            aria-label={`${title} checkbox`}
+          />
+        </>
       )}
-      <Checkbox
-        checked={completed}
-        onChange={() => handleCheck(id)}
-        color="primary"
-        aria-label={`${title} checkbox`}
-      />
     </TodoLayout>
   );
 };
