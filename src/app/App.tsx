@@ -29,7 +29,7 @@ const App: React.FC = () => {
     const newTodo = await API.postTodo({ title: value });
     setTodos((state) => {
       state.set(newTodo.id, newTodo);
-      return state;
+      return new Map(state);
     });
   };
 

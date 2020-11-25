@@ -5,16 +5,25 @@ import { todoToMap } from 'utils';
 
 const API_URL = 'https://jsonplaceholder.typicode.com/todos';
 
+let inMemoryDB: Map<number, Todo> = new Map();
+let lastId = 0;
+
 const API = {
   async getTodosForUser(userId: number): Promise<Map<number, Todo>> {
-    const urlParams = new URLSearchParams();
-    urlParams.set('userId', userId.toString());
+    if (inMemoryDB.size === 0) {
+      const urlParams = new URLSearchParams();
+      urlParams.set('userId', userId.toString());
 
-    const { data } = await axios.get<Todo[]>(
-      `${API_URL}?${urlParams.toString()}`,
-    );
+      const { data } = await axios.get<Todo[]>(
+        `${API_URL}?${urlParams.toString()}`,
+      );
 
-    return todoToMap(data);
+      // since the API doesn't really support adding new items, we are going to imitate it
+      inMemoryDB = todoToMap(data);
+      lastId = Array.from(inMemoryDB.keys()).pop() ?? 0;
+    }
+
+    return inMemoryDB;
   },
 
   async getAllTodos(): Promise<Map<number, Todo>> {
@@ -30,12 +39,12 @@ const API = {
     title: string;
     userId?: number;
   }): Promise<Todo> {
-    return (
-      await axios.post<Todo>(API_URL, {
-        title,
-        userId,
-      })
-    ).data;
+    const { data } = await axios.post<Todo>(API_URL, {
+      title,
+      userId,
+    });
+    data.id = ++lastId;
+    return data;
   },
 
   async updateTodo({
