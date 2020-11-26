@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from 'react-beautiful-dnd';
 
 import { Todo } from 'interfaces';
 import API from 'services';
+import { reorder } from 'utils';
 
 import Task from './Task';
 
@@ -40,18 +47,39 @@ const Tasks: React.FC<Props> = (props) => {
     setInEdit(undefined);
   };
 
+  const handleOnDragEnd = (result: DropResult) => {
+    // dropped outside the list
+    if (result.destination === undefined) {
+      return;
+    }
+
+    const items = reorder(todos, result.source.index, result.destination.index);
+    handleUpdate(items);
+  };
+
   return (
-    <div>
-      {Array.from(todos).map(([id, todo]) => (
-        <Task
-          key={id}
-          item={todo}
-          inEdit={inEdit}
-          setInEdit={setInEdit}
-          handleSave={handleSave}
-        />
-      ))}
-    </div>
+    <DragDropContext onDragEnd={handleOnDragEnd}>
+      <Droppable droppableId="droppable">
+        {(provided) => (
+          <div {...provided.droppableProps} ref={provided.innerRef}>
+            {Array.from(todos).map(([id, todo], index) => (
+              <Draggable key={id} draggableId={id.toString()} index={index}>
+                {(DraggableProvided) => (
+                  <Task
+                    key={id}
+                    item={todo}
+                    inEdit={inEdit}
+                    setInEdit={setInEdit}
+                    handleSave={handleSave}
+                    provided={DraggableProvided}
+                  />
+                )}
+              </Draggable>
+            ))}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 };
 

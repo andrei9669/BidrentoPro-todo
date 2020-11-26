@@ -17,3 +17,15 @@ export const usePrevious = <T>(value: T): T => {
   });
   return ref.current;
 };
+
+export const reorder = (
+  list: Map<string | number, Todo>,
+  startIndex: number,
+  endIndex: number,
+): Map<string | number, Todo> => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return new Map(result);
+};

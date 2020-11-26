@@ -39,8 +39,6 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 # TODO
 ## Implement: 
 
-- add empty input error handling to existing todos
-- [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd)
 - tests
 - [storybook](https://storybook.js.org/)
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, TextField, Typography } from '@material-ui/core';
 import styled from 'styled-components';
+import { DraggableProvided } from 'react-beautiful-dnd';
 
 import { Todo } from 'interfaces';
 
@@ -8,9 +9,8 @@ const TodoLayout = styled.div`
   display: grid;
   grid-template-columns: 1fr auto;
   padding: 0 0 0 1rem;
-  &:nth-child(even) {
-    background-color: #dddddd;
-  }
+
+  border-bottom: 2px solid #b1b1b1;
 `;
 const StyledButton = styled(Button)`
   height: 24px;
@@ -23,6 +23,7 @@ const StyledTypography = styled(Typography)`
 `;
 
 interface Props {
+  provided: DraggableProvided;
   item: Todo;
   inEdit: number | undefined;
   setInEdit: React.Dispatch<React.SetStateAction<number | undefined>>;
@@ -35,6 +36,7 @@ const Task: React.FC<Props> = (props) => {
     inEdit,
     setInEdit,
     handleSave,
+    provided,
   } = props;
 
   const [value, setValue] = useState(title);
@@ -48,7 +50,11 @@ const Task: React.FC<Props> = (props) => {
   }, [inEdit, title]);
 
   return (
-    <TodoLayout>
+    <TodoLayout
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+    >
       {id === inEdit ? (
         <>
           <TextField
