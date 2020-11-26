@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, TextField, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 
@@ -43,6 +43,10 @@ const Task: React.FC<Props> = (props) => {
     setValue(event.target.value);
   };
 
+  useEffect(() => {
+    setValue(title);
+  }, [inEdit, title]);
+
   return (
     <TodoLayout>
       {id === inEdit ? (
@@ -52,14 +56,18 @@ const Task: React.FC<Props> = (props) => {
             rowsMax={5}
             fullWidth
             value={value}
-            error={false}
+            error={value === ''}
             onChange={handleChange}
           />
           <StyledButton
             type="submit"
             color="primary"
             variant="contained"
-            onClick={() => handleSave(value, id, completed)}
+            onClick={async () => {
+              if (value !== '') {
+                await handleSave(value, id, completed);
+              }
+            }}
           >
             Save
           </StyledButton>
