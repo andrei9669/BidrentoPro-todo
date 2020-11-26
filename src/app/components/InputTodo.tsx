@@ -34,18 +34,23 @@ const StyledTextField = styled(TextField)<{
 
 const InputTodo: React.FC<Props> = (props) => {
   const { setTodo } = props;
-  const [inputValue, setInputValue] = useState<string>();
+  const [inputValue, setInputValue] = useState<string>('');
   const [errorAnimation, setErrorAnimation] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value);
+    const v = event.target.value;
+    setInputValue(v);
     setErrorAnimation(false);
+    setError(v === '');
   };
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       setErrorAnimation(false);
+      setError(false);
     }, ANIMATION_DURATION);
+
     return () => {
       clearTimeout(timeout);
     };
@@ -58,7 +63,7 @@ const InputTodo: React.FC<Props> = (props) => {
         multiline
         rowsMax={5}
         value={inputValue}
-        error={inputValue === ''}
+        error={error}
         error_animation={errorAnimation.toString()}
         onChange={handleChange}
       />
@@ -66,10 +71,12 @@ const InputTodo: React.FC<Props> = (props) => {
         color="primary"
         variant="contained"
         onClick={() => {
-          if (typeof inputValue === 'string' && inputValue !== '') {
+          if (inputValue !== '') {
             setTodo(inputValue);
+            setInputValue('');
           } else {
             setErrorAnimation(true);
+            setError(true);
           }
         }}
       >
