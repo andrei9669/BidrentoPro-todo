@@ -6,6 +6,7 @@
       "dom.iterable",
       "esnext"
     ],
+    "types": ["node", "cypress"],
     "allowJs": true,
     "baseUrl": "src",
     "skipLibCheck": true,
@@ -19,11 +20,12 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react"
   },
   "include": [
     ".",
-    ".eslintrc.js"
+    "**/*.eslintrc.js",
+    "cypress/component/*.tsx"
   ],
   "exclude": [
     "node_modules"
