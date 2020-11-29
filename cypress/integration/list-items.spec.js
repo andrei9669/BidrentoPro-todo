@@ -12,7 +12,7 @@ describe('List items', () => {
       .should('have.prop', 'checked');
   });
 
-  it.only('removes todo', () => {
+  it('removes todo', () => {
     cy.get('[data-cy=todos] div').as('list');
 
     cy.get('@list')
@@ -22,6 +22,14 @@ describe('List items', () => {
       .click();
 
     cy.get('@list').should('have.length', 3).and('not.contain', 'Milk');
+  });
+
+  it('Edits todo', () => {
+    cy.get('[data-cy=todos] div').first().as('item');
+
+    cy.get('@item').click().find('textarea').first().clear().type('Buy 2 milk');
+    cy.get('@item').find('button').click();
+    cy.get('@item').contains('Buy 2 milk').and('not.contain', 'Save');
   });
 
   it('Marks an incomplete item complete', () => {

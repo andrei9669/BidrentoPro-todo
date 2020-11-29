@@ -56,6 +56,7 @@ const Filters: React.FC<Props> = (props) => {
       </FilterLayout>
       <div>
         <TextField
+          data-cy="search"
           variant="outlined"
           value={titleFilter}
           label="Search"
