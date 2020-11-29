@@ -23,7 +23,9 @@ const TasksLeft: React.FC<Props> = (props) => {
 
   return (
     <Layout>
-      <Typography variant="caption">{todosLeft} todos left</Typography>
+      <Typography data-cy="task-count" variant="caption">
+        {todosLeft} {todosLeft === 1 ? 'todo' : 'todos'} left
+      </Typography>
     </Layout>
   );
 };

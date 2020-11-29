@@ -7,7 +7,7 @@ import { IFilters, Todo } from 'interfaces';
 import API from 'services';
 import { ALL, ACTIVE, COMPLETED, USER_ID } from 'utils/constants';
 
-import { Filters, InputTodo, Tasks, TodoCount } from './components';
+import { Filters, InputTodo, Tasks, TasksLeft } from './components';
 
 const Layout = styled(Paper)`
   width: 25rem;
@@ -75,7 +75,7 @@ const App: React.FC = () => {
       <Filters filters={filters} setFilters={setFilters} />
       <InputTodo setTodo={handleAdd} />
       <Divider />
-      <TodoCount todos={todos} />
+      <TasksLeft todos={todos} />
       <Tasks todos={new Map(filteredTodos)} handleUpdate={setTodos} />
     </Layout>
   );
