@@ -44,8 +44,12 @@ const App: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const data = await API.getTodosForUser(1);
-      setTodos(data);
+      try {
+        const data = await API.getTodosForUser(1);
+        setTodos(data);
+      } catch (e) {
+        toast.error('Could not load todos', { toastId: 'error-message' });
+      }
     })();
   }, []);
 

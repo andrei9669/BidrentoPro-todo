@@ -1,0 +1,6 @@
+[
+  { "id": 1, "completed": false, "title": "Buy Milk" },
+  { "id": 2, "completed": true, "title": "Buy Eggs" },
+  { "id": 3, "completed": false, "title": "Buy Bread" },
+  { "id": 4, "completed": false, "title": "Buy French Toast" }
+]
