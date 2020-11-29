@@ -16,6 +16,7 @@ const TodoLayout = styled.div<{ 'data-completed': string | undefined }>`
   display: grid;
   grid-template-columns: 1fr auto auto;
   padding: 0 0 0 1rem;
+  min-height: 50px;
 
   border-bottom: 2px solid #b1b1b1;
 
@@ -34,7 +35,6 @@ const StyledButton = styled(Button)`
 const StyledTypography = styled(Typography)`
   max-width: 20rem;
   overflow-x: hidden;
-  min-height: 50px;
 `;
 
 const StyledIconButton = styled(IconButton)<{

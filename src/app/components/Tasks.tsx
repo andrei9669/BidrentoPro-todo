@@ -85,6 +85,7 @@ const Tasks: React.FC<Props> = (props) => {
                 )}
               </Draggable>
             ))}
+            {provided.placeholder}
           </div>
         )}
       </Droppable>
