@@ -37,12 +37,14 @@ const StyledTypography = styled(Typography)`
   min-height: 50px;
 `;
 
-const StyledIconButton = styled(IconButton)<{ 'show-delete': boolean }>`
+const StyledIconButton = styled(IconButton)<{
+  'show-delete': 'true' | undefined;
+}>`
   transition: max-width linear 300ms, width linear 300ms, margin linear 300ms,
     padding linear 300ms, opacity linear 300ms;
   overflow: hidden;
   ${({ 'show-delete': showDelete }) =>
-    !showDelete &&
+    showDelete === undefined &&
     css`
       max-width: 0;
       width: 0;
@@ -57,7 +59,7 @@ interface Props {
   item: Todo;
   inEdit: number | undefined;
   setInEdit: React.Dispatch<React.SetStateAction<number | undefined>>;
-  handleSave: (title: string, id: number, completed: boolean) => Promise<void>;
+  handleSave: (item: Todo) => Promise<void>;
   handleDelete: (id: number) => Promise<void>;
 }
 
@@ -72,7 +74,7 @@ const Task: React.FC<Props> = (props) => {
   } = props;
 
   const [value, setValue] = useState(title);
-  const [showDelete, setShowDelete] = useState(false);
+  const [showDelete, setShowDelete] = useState<'true'>();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -90,8 +92,8 @@ const Task: React.FC<Props> = (props) => {
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
-      onMouseEnter={() => setShowDelete(true)}
-      onMouseLeave={() => setShowDelete(false)}
+      onMouseEnter={() => setShowDelete('true')}
+      onMouseLeave={() => setShowDelete(undefined)}
     >
       {id === inEdit ? (
         <>
@@ -109,7 +111,7 @@ const Task: React.FC<Props> = (props) => {
             variant="contained"
             onClick={async () => {
               if (value !== '') {
-                await handleSave(value, id, completed);
+                await handleSave({ userId: 1, title: value, id, completed });
               }
             }}
           >
@@ -122,9 +124,9 @@ const Task: React.FC<Props> = (props) => {
             {title}
           </StyledTypography>
           <StyledIconButton
+            show-delete={showDelete}
             data-cy="delete"
             color="secondary"
-            show-delete={showDelete}
             aria-label="delete"
             onClick={() => handleDelete(id)}
           >
@@ -132,7 +134,9 @@ const Task: React.FC<Props> = (props) => {
           </StyledIconButton>
           <Checkbox
             checked={completed}
-            onChange={() => handleSave(value, id, !completed)}
+            onChange={() =>
+              handleSave({ userId: 1, title: value, id, completed: !completed })
+            }
             color="primary"
             aria-label={`${title} checkbox`}
           />
