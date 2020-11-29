@@ -32,6 +32,11 @@ const StyledTextField = styled(TextField)<{
     `}
 `;
 
+const StyleForm = styled.form`
+  display: grid;
+  gap: 1rem;
+`;
+
 const InputTodo: React.FC<Props> = (props) => {
   const { setTodo } = props;
   const [inputValue, setInputValue] = useState<string>('');
@@ -43,6 +48,17 @@ const InputTodo: React.FC<Props> = (props) => {
     setInputValue(v);
     setErrorAnimation(false);
     setError(v === '');
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (inputValue !== '') {
+      setTodo(inputValue);
+      setInputValue('');
+    } else {
+      setErrorAnimation(true);
+      setError(true);
+    }
   };
 
   useEffect(() => {
@@ -57,32 +73,21 @@ const InputTodo: React.FC<Props> = (props) => {
   }, [errorAnimation]);
 
   return (
-    <>
+    <StyleForm onSubmit={handleSubmit}>
       <StyledTextField
+        inputProps={{ 'data-cy': 'todo-input' }}
+        autoFocus
         label="Add Todo"
-        multiline
         rowsMax={5}
         value={inputValue}
         error={error}
         error_animation={errorAnimation.toString()}
         onChange={handleChange}
       />
-      <Button
-        color="primary"
-        variant="contained"
-        onClick={() => {
-          if (inputValue !== '') {
-            setTodo(inputValue);
-            setInputValue('');
-          } else {
-            setErrorAnimation(true);
-            setError(true);
-          }
-        }}
-      >
+      <Button type="submit" color="primary" variant="contained">
         Add
       </Button>
-    </>
+    </StyleForm>
   );
 };
 

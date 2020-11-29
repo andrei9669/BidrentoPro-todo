@@ -61,7 +61,11 @@ const Tasks: React.FC<Props> = (props) => {
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <Droppable droppableId="droppable">
         {(provided) => (
-          <div {...provided.droppableProps} ref={provided.innerRef}>
+          <div
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            data-cy="todos"
+          >
             {Array.from(todos).map(([id, todo], index) => (
               <Draggable key={id} draggableId={id.toString()} index={index}>
                 {(DraggableProvided) => (

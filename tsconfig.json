@@ -6,7 +6,10 @@
       "dom.iterable",
       "esnext"
     ],
-    "types": ["node", "cypress"],
+    "types": [
+      "node",
+      "cypress"
+    ],
     "allowJs": true,
     "baseUrl": "src",
     "skipLibCheck": true,
@@ -20,7 +23,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react-jsx"
   },
   "include": [
     ".",

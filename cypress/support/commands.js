@@ -23,3 +23,16 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+/**
+ * Get a DOM element by targeting its data-cy attribute value
+ * @param data_target data-cy attribute value to target
+ */
+export function getByDataAttribute(data_target) {
+  // do something with someObject here
+  return cy.get('[data-cy=' + data_target + ']');
+}
+
+Cypress.Commands.add('getCy', getByDataAttribute);
+
+export {};

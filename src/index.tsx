@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { StylesProvider } from '@material-ui/core';
+import { ToastContainer } from 'react-toastify';
 
 import App from 'app/App';
 import reportWebVitals from 'reportWebVitals';
 
+import 'react-toastify/dist/ReactToastify.css';
 import 'index.scss';
 
 ReactDOM.render(
   <React.StrictMode>
+    <ToastContainer />
     <StylesProvider injectFirst>
       <App />
     </StylesProvider>

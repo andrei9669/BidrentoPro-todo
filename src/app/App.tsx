@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Divider, Paper } from '@material-ui/core';
+import { toast } from 'react-toastify';
 
 import { IFilters, Todo } from 'interfaces';
 import API from 'services';
@@ -18,6 +19,7 @@ const Layout = styled(Paper)`
   grid-template-rows:
     auto
     auto
+    auto
     1fr;
 `;
 
@@ -29,11 +31,15 @@ const App: React.FC = () => {
   });
 
   const handleAdd = async (value: string) => {
-    const newTodo = await API.postTodo({ title: value });
-    setTodos((state) => {
-      state.set(newTodo.id, newTodo);
-      return new Map(state);
-    });
+    try {
+      const newTodo = await API.postTodo({ title: value });
+      setTodos((state) => {
+        state.set(newTodo.id, newTodo);
+        return new Map(state);
+      });
+    } catch (e) {
+      toast.error('Failed to add todo', { toastId: 'add-todo-error' });
+    }
   };
 
   useEffect(() => {
