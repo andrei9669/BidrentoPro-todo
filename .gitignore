@@ -26,3 +26,4 @@ package-lock.json
 .eslintcache
 .idea
 debug.log
+cypress/videos
