@@ -1,4 +1,4 @@
-import { ALL, DONE, NOT_DONE } from 'utils/constants';
+import { ALL, ACTIVE, COMPLETED } from 'utils/constants';
 
 export interface Todo {
   userId: number;
@@ -9,5 +9,5 @@ export interface Todo {
 
 export interface IFilters {
   titleFilter: string;
-  checkedFilter: typeof ALL | typeof DONE | typeof NOT_DONE;
+  checkedFilter: typeof ALL | typeof ACTIVE | typeof COMPLETED;
 }

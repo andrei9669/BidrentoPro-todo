@@ -23,4 +23,21 @@ describe('List items', () => {
 
     cy.get('@list').should('have.length', 3).and('not.contain', 'Milk');
   });
+
+  it('Marks an incomplete item complete', () => {
+    cy.fixture('todos').then((todos) => {
+      const target = Cypress._.head(todos);
+      cy.route(
+        'PUT',
+        `/todos/${target.id}`,
+        Cypress._.merge(target, { completed: true }),
+      );
+    });
+
+    cy.get('[data-cy=todos] div').first().as('first-todo');
+
+    cy.get('@first-todo').find('input').click().should('be.checked');
+
+    cy.get('@first-todo').should('have.attr', 'data-completed');
+  });
 });

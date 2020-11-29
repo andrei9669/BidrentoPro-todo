@@ -5,9 +5,9 @@ import { toast } from 'react-toastify';
 
 import { IFilters, Todo } from 'interfaces';
 import API from 'services';
-import { ALL, DONE, NOT_DONE } from 'utils/constants';
+import { ALL, ACTIVE, COMPLETED } from 'utils/constants';
 
-import { Filters, InputTodo, Tasks } from './components';
+import { Filters, InputTodo, Tasks, TodoCount } from './components';
 
 const Layout = styled(Paper)`
   width: 25rem;
@@ -56,10 +56,10 @@ const App: React.FC = () => {
   const filteredTodos = Array.from(todos).filter(([, todo]) => {
     let show: boolean;
     switch (filters.checkedFilter) {
-      case DONE:
+      case ACTIVE:
         show = todo.completed;
         break;
-      case NOT_DONE:
+      case COMPLETED:
         show = !todo.completed;
         break;
       case ALL:
@@ -75,6 +75,7 @@ const App: React.FC = () => {
       <Filters filters={filters} setFilters={setFilters} />
       <InputTodo setTodo={handleAdd} />
       <Divider />
+      <TodoCount todos={todos} />
       <Tasks todos={new Map(filteredTodos)} handleUpdate={setTodos} />
     </Layout>
   );

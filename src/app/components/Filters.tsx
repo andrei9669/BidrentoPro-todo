@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 
 import { IFilters } from 'interfaces';
-import { ALL, DONE, NOT_DONE } from 'utils/constants';
+import { ALL, ACTIVE, COMPLETED } from 'utils/constants';
 
 const Layout = styled.div`
   display: grid;
@@ -25,7 +25,7 @@ const Filters: React.FC<Props> = (props) => {
   const handleChange = (e: React.ChangeEvent<{ value: unknown }>) => {
     setFilters((s) => ({
       ...s,
-      checkedFilter: e.target.value as 'all' | 'done' | 'not done',
+      checkedFilter: e.target.value as 'all' | 'active' | 'completed',
     }));
   };
 
@@ -44,9 +44,9 @@ const Filters: React.FC<Props> = (props) => {
           onChange={handleChange}
           fullWidth
         >
-          <MenuItem value={ALL}>Both</MenuItem>
-          <MenuItem value={DONE}>Done</MenuItem>
-          <MenuItem value={NOT_DONE}>Not Done</MenuItem>
+          <MenuItem value={ALL}>All</MenuItem>
+          <MenuItem value={ACTIVE}>Active</MenuItem>
+          <MenuItem value={COMPLETED}>Completed</MenuItem>
         </Select>
       </div>
       <div>

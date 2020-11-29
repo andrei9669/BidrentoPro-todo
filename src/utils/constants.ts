@@ -1,3 +1,3 @@
 export const ALL = 'all';
-export const DONE = 'done';
-export const NOT_DONE = 'not done';
+export const ACTIVE = 'active';
+export const COMPLETED = 'completed';
