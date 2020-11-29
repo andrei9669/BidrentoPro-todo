@@ -57,10 +57,10 @@ const App: React.FC = () => {
     let show: boolean;
     switch (filters.checkedFilter) {
       case ACTIVE:
-        show = todo.completed;
+        show = !todo.completed;
         break;
       case COMPLETED:
-        show = !todo.completed;
+        show = todo.completed;
         break;
       case ALL:
       default:
