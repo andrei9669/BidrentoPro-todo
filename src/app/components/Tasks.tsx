@@ -47,6 +47,13 @@ const Tasks: React.FC<Props> = (props) => {
     setInEdit(undefined);
   };
 
+  const handleDelete = async (id: number): Promise<void> => {
+    handleUpdate((s) => {
+      s.delete(id);
+      return new Map(s);
+    });
+  };
+
   const handleOnDragEnd = (result: DropResult) => {
     // dropped outside the list
     if (result.destination === undefined) {
@@ -76,6 +83,7 @@ const Tasks: React.FC<Props> = (props) => {
                     setInEdit={setInEdit}
                     handleSave={handleSave}
                     provided={DraggableProvided}
+                    handleDelete={handleDelete}
                   />
                 )}
               </Draggable>
