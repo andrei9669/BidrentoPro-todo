@@ -11,6 +11,10 @@ const Layout = styled.div`
   gap: 1rem;
 `;
 
+const FilterLayout = styled.div`
+  min-width: 7rem;
+`;
+
 interface Props {
   filters: IFilters;
   setFilters: React.Dispatch<React.SetStateAction<IFilters>>;
@@ -35,11 +39,12 @@ const Filters: React.FC<Props> = (props) => {
 
   return (
     <Layout>
-      <div>
-        <InputLabel id="done/not filter">(Not)Done filter</InputLabel>
+      <FilterLayout>
+        <InputLabel id="done/not filter">Filter</InputLabel>
         <Select
-          id="done/not filter"
-          labelId="done/not filter"
+          data-cy="filters"
+          id="todos filter"
+          labelId="todos filter"
           value={checkedFilter}
           onChange={handleChange}
           fullWidth
@@ -48,7 +53,7 @@ const Filters: React.FC<Props> = (props) => {
           <MenuItem value={ACTIVE}>Active</MenuItem>
           <MenuItem value={COMPLETED}>Completed</MenuItem>
         </Select>
-      </div>
+      </FilterLayout>
       <div>
         <TextField
           variant="outlined"
