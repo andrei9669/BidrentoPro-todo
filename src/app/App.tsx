@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 import { IFilters, Todo } from 'interfaces';
 import API from 'services';
-import { ALL, ACTIVE, COMPLETED } from 'utils/constants';
+import { ALL, ACTIVE, COMPLETED, USER_ID } from 'utils/constants';
 
 import { Filters, InputTodo, Tasks, TodoCount } from './components';
 
@@ -45,7 +45,7 @@ const App: React.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        const data = await API.getTodosForUser(1);
+        const data = await API.getTodosForUser(USER_ID);
         setTodos(data);
       } catch (e) {
         toast.error('Could not load todos', { toastId: 'error-message' });

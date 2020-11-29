@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { Todo } from 'interfaces';
 import { todoToMap } from 'utils';
+import { USER_ID } from 'utils/constants';
 
 const API_URL = 'https://jsonplaceholder.typicode.com/todos';
 
@@ -34,7 +35,7 @@ const API = {
 
   async postTodo({
     title,
-    userId = 1,
+    userId = USER_ID,
   }: {
     title: string;
     userId?: number;
