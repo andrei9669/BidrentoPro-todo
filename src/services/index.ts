@@ -64,5 +64,9 @@ const API = {
       })
     ).data;
   },
+
+  async deleteTodo(id: number): Promise<void> {
+    await axios.delete(`${API_URL}/${id}`);
+  },
 };
 export default API;

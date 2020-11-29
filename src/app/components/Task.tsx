@@ -122,6 +122,7 @@ const Task: React.FC<Props> = (props) => {
             {title}
           </StyledTypography>
           <StyledIconButton
+            data-cy="delete"
             color="secondary"
             show-delete={showDelete}
             aria-label="delete"

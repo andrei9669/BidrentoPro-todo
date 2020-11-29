@@ -5,6 +5,7 @@ import {
   Draggable,
   DropResult,
 } from 'react-beautiful-dnd';
+import { toast } from 'react-toastify';
 
 import { Todo } from 'interfaces';
 import API from 'services';
@@ -48,10 +49,15 @@ const Tasks: React.FC<Props> = (props) => {
   };
 
   const handleDelete = async (id: number): Promise<void> => {
-    handleUpdate((s) => {
-      s.delete(id);
-      return new Map(s);
-    });
+    try {
+      await API.deleteTodo(id);
+      handleUpdate((s) => {
+        s.delete(id);
+        return new Map(s);
+      });
+    } catch (e) {
+      toast.error('Failed to remove todo');
+    }
   };
 
   const handleOnDragEnd = (result: DropResult) => {
